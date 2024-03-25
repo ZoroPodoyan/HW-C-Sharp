@@ -1,0 +1,168 @@
+using System;
+using System.Collections.Generic;
+
+// Book class
+public class Book
+{
+    // Properties
+    private string title;
+    private Author author;
+    private Category category;
+    private int year;
+    private double price;
+
+    // Constructors
+    public Book(string title, Author author, Category category, int year, double price)
+    {
+        this.title = title;
+        this.author = author;
+        this.category = category;
+        this.year = year;
+        this.price = price;
+    }
+
+    // Getters and Setters
+    public string GetTitle()
+    {
+        return title;
+    }
+
+    public Author GetAuthor()
+    {
+        return author;
+    }
+
+    public Category GetCategory()
+    {
+        return category;
+    }
+
+    public int GetYear()
+    {
+        return year;
+    }
+
+    public double GetPrice()
+    {
+        return price;
+    }
+}
+
+// Author class
+public class Author
+{
+    // Properties
+    private string name;
+    private string biography;
+
+    // Constructors
+    public Author(string name, string biography)
+    {
+        this.name = name;
+        this.biography = biography;
+    }
+
+    // Getters and Setters
+    public string GetName()
+    {
+        return name;
+    }
+
+    public string GetBiography()
+    {
+        return biography;
+    }
+}
+
+// Sealed Category class
+public sealed class Category
+{
+    // Properties
+    private string categoryName;
+    private string description;
+
+    // Constructors
+    public Category(string categoryName, string description)
+    {
+        this.categoryName = categoryName;
+        this.description = description;
+    }
+
+    // Getters and Setters
+    public string GetCategoryName()
+    {
+        return categoryName;
+    }
+
+    public string GetDescription()
+    {
+        return description;
+    }
+}
+
+// Static LibraryManager class
+public static class LibraryManager
+{
+    // List to store books
+    private static List<Book> books = new List<Book>();
+
+    // Add a new book to the library
+    public static void AddBook(Book book)
+    {
+        books.Add(book);
+    }
+
+    // Remove a book from the library by title
+    public static void RemoveBook(string title)
+    {
+        Book bookToRemove = books.Find(book => book.GetTitle().Equals(title, StringComparison.OrdinalIgnoreCase));
+        if (bookToRemove != null)
+        {
+            books.Remove(bookToRemove);
+            Console.WriteLine($"Book '{title}' removed successfully.");
+        }
+        else
+        {
+            Console.WriteLine($"Book '{title}' not found.");
+        }
+    }
+
+    // Display all books in the library
+    public static void ListAllBooks()
+    {
+        Console.WriteLine("List of Books in the Library:");
+        foreach (var book in books)
+        {
+            Console.WriteLine($"Title: {book.GetTitle()}, Author: {book.GetAuthor().GetName()}, Category: {book.GetCategory().GetCategoryName()}, Year: {book.GetYear()}, Price: {book.GetPrice()}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Sample author and category
+        Author author1 = new Author("John Doe", "A prolific writer.");
+        Category category1 = new Category("Fiction", "Books that are not based on real events.");
+
+        // Sample books
+        Book book1 = new Book("Book 1", author1, category1, 2020, 19.99);
+        Book book2 = new Book("Book 2", author1, category1, 2019, 15.99);
+
+        // Add books to the library
+        LibraryManager.AddBook(book1);
+        LibraryManager.AddBook(book2);
+
+        // List all books
+        LibraryManager.ListAllBooks();
+
+        // Remove a book
+        LibraryManager.RemoveBook("Book 1");
+
+        // List all books after removal
+        LibraryManager.ListAllBooks();
+
+        Console.ReadLine();
+    }
+}
